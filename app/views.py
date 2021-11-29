@@ -7,7 +7,7 @@ from .forms import CryptoForm
 
 def home(request):
     context = {}
-    if request.user.is_admin():
+    if request.user.is_superuser:
         form = CryptoForm(request.POST or None)
         context['form'] = form
         lated_range = CryptoModel.objects.filter('-id')[0]
