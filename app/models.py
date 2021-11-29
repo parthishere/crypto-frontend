@@ -10,7 +10,7 @@ CRYPTO_CHOICES  = {
 
 class CryptoModel(models.Model):
     crypto_name = models.CharField(choices=CRYPTO_CHOICES, max_length=4, default='CTS')
-    current_value = models.IntegerField(default=0)
+    current_value = models.FloatField(default=0.0)
     max_upper_bound = models.FloatField(null=True, blank=True)
     min_lower_bound = models.FloatField(null=True, blank=True)
     

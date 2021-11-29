@@ -7,7 +7,10 @@
 
 
     <body>
-    {{ data }}
+    {% if error %}
+    {{ error }}
+    {% endif %}
+
     {% if request.user.is_superuser %}
         <form method='POST' action="{% url 'home' %}">
         {% csrf_token %} 
@@ -15,7 +18,11 @@
             <input type='submit' value='submit' name='submit'>
         </form>
     </body>
-    {% else %} {% endif %}
+    current value: {{ data.current_value }} <br>
+    lower and upper bound : {{ data.min_lower_bound }} - {{ data.max_upper_bound }}
+    {% else %} 
+    Not superuser
+    {% endif %}
 
 
 </html>

@@ -12,12 +12,16 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -80,11 +84,17 @@ WSGI_APPLICATION = 'crypto.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ['DATABASE_NAME'],
+        'HOST': os.environ['DATABASE_HOST'],
+        'PORT': 5432,
+        'USER': os.environ['DATABASE_USER'],
+        'PASSWORD': os.environ['DATABASE_PASSWORD'],
     }
 }
 
+# postgres://pflvajfhrtvikh:0232f6c99b183e905d8b3b23dccef85492f7a7bec9198332bde205d71d944e8c@ec2-54-146-82-179.compute-1.amazonaws.com:5432/db5hv32kpfi5t5
+# postgres://hhrjxxaoxekaii:c86d7fb1e83cafc0fa06bf20760106ac61077a14ab3180d6256b5f533eed0544@ec2-54-145-224-156.compute-1.amazonaws.com:5432/d1p54407n5oqah
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
