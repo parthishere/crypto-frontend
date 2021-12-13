@@ -25,7 +25,8 @@ def home(request):
             ins = form.save()
             ins.current_value = current_price
             ins.save()
-            context['ins'] = ins
+            context['curr_price'] = current_price
+            context['ins'] = ins    
             return redirect('home')
     else:
         context['data'] = "Not Authenticated"
