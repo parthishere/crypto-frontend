@@ -19,6 +19,8 @@ def home(request):
         if form.is_valid() and request.POST:
             if form.cleaned_data.get('min_lower_bound') >= form.cleaned_data.get('max_upper_bound'):
                 return HttpResponse("Lower bound cannot be greater than or equal to Upper bound")
+            if form.cleaned_data.get('min_lower_bound') <= 0 or form.cleaned_data.get('max_upper_bound') <= 0:
+                return HttpResponse("Lower bound or Upper bound can not be zeero and less than zero")
             current_price = float(requests.get("https://api.hotbit.io/api/v1/market.last?market=CTS/USDT").json().get('result'))
             ins = form.save()
             ins.current_value = current_price
