@@ -2,8 +2,8 @@ from django.shortcuts import render,redirect, HttpResponse
 
 # Create your views here.
 from django.shortcuts import render
-from .models import CryptoModel, ContractTradeModel
-from .forms import CryptoForm
+from .models import ContinuousTeadeModel, CryptoModel, ContractTradeModel
+from .forms import CryptoForm, ContinuousForm
 import requests
 
 def home(request):
@@ -32,3 +32,31 @@ def home(request):
     else:
         context['data'] = "Not Authenticated"
     return render(request, "index.html", context=context)
+
+
+def continuous_view(request):
+    context = {}
+    if request.user.is_superuser:
+        form = ContinuousForm(request.POST or None)
+        context['form'] = form
+        MARKET_SUMMERY_TODAY = "https://api.hotbit.io/api/v1/market.status_today"
+        market = 'CTS/USDT'
+        response = float(requests.get("{}?market={}".format(MARKET_SUMMERY_TODAY, market)).json().get('result').get('volume'))
+        context['curr_vol'] = response
+        try:
+            instance = ContinuousTeadeModel.objects.all().order_by('-id')[0]
+            context['data'] = instance
+        except IndexError:
+            context['error'] = 'No data available'  
+        if form.is_valid() and request.POST:
+            if form.cleaned_data.get('volume24h') <= 0 or form.cleaned_data.get('volume24h') < response:
+                return HttpResponse("volume not valid")
+            ins = form.save()
+            
+            context['ins'] = ins    
+            return redirect('ctrade')
+        
+    else:
+        context['data'] = "Not Authenticated"
+    return render(request, "trade.html", context=context)
+    

@@ -1,0 +1,32 @@
+<html>
+    
+
+    <head>
+        <title>Continuous Trade</title>
+    </head>
+
+
+    <body>
+    {% if error %}
+    {{ error }}
+    {% endif %}
+        <br>
+        current 24h volume: {{ curr_vol }}
+        <br>
+        <hr>
+        <br>
+    {% if request.user.is_superuser %}
+        <form method='POST' action="{% url 'ctrade' %}">
+        {% csrf_token %} 
+            {{ form }}
+            <input type='submit' value='submit' name='submit'>
+        </form>
+    </body>
+     <br>
+    Target Volume : {{ data.volume24h }}
+    {% else %} 
+    Not superuser
+    {% endif %}
+
+
+</html>
