@@ -17,7 +17,7 @@ class CryptoModel(models.Model):
 class ContinuousTeadeModel(models.Model):
     continuous_trade = models.BooleanField(default=False)
     volume24h = models.FloatField(default=1000)
-    default_trade_time = models.FloatField(default=10, verbose_name="estimated in minutes")
+    default_trade_time = models.FloatField(default=2, verbose_name="estimated in hours")
     
 class ContractTradeModel(models.Model):
     crypto_name = models.CharField(choices=CRYPTO_CHOICES, max_length=4, default='CTS')
